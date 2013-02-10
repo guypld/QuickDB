@@ -2,6 +2,10 @@
 
 (def db {})
 
+#_ (def db (ref #{}))
+#_ (defstruct account :id :balance)
+#_ (dosync (alter accounts conj(struct account "CLJ" 1000.00)))
+
 
 (defn dropTable [name] (def db (dissoc db name)))
 
