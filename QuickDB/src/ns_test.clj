@@ -2,10 +2,7 @@
 
 (def db {})
 
-(defn dropTable 
-	"Dropping a table from DB"
-	[name] 
-	(def db (dissoc db name)))
+(defn dropTable [name] (def db (dissoc db name)))
 
 (defn updateTable [tableName newVec] (def db (assoc-in db [tableName] newVec)))
 
