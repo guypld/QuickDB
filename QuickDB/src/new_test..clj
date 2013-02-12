@@ -8,3 +8,6 @@
 	(alter accounts conj(
 		struct account "CLJ" 1000.00)))
 
+; if function is a predicate it should end with ?
+(string? "hello")
+; string? keyword? symbol?
