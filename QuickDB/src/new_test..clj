@@ -11,3 +11,10 @@
 ; if function is a predicate it should end with ?
 (string? "hello")
 ; string? keyword? symbol?
+
+
+; we can just call (greeting) -> "hello default"
+(defn greeting
+	"dsdsdsd"
+	( [] (greeting "default"))
+	( [username] (str "hello " username)))
