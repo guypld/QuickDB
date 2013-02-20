@@ -3,28 +3,67 @@
 (def db (ref {}))
 
 
-(defn dropTable [name] (dosync(alter db dissoc name)))
+(defn dropTable 
+  [name] 
+  (dosync
+    (alter db dissoc name)))
 
 ;(defn updateTable [tableName newVec] (dosync (alter db assoc-in  tableName newVec)))
 
-(defn checkValidation [list1 list2 func msg] (if (nil? list1) true (if (func (first list1) list2) (checkValidation (next list1) list2 func msg) (println msg)) ))
+(defn checkValidation 
+  [list1 list2 func msg] 
+  (if (nil? list1) 
+    true 
+    (if (func (first list1) list2) 
+      (checkValidation (next list1) list2 func msg) 
+      (println msg)) ))
 
-(defn checkAllKeysExists [list1 list2 func msg] (if (nil? list1) true
-                                                  (if(= (second (first list1)) 1)
-                                                  (if (func (first list1) list2) 
-                                                    (checkValidation (next list1) list2 func msg) 
-                                                    (println msg)) (checkValidation (next list1) list2 func msg))) )
+(defn checkAllKeysExists 
+  [list1 list2 func msg] 
+  (if (nil? list1) 
+    true
+    (if(= (second (first list1)) 1)
+      (if (func (first list1) list2) 
+        (checkValidation (next list1) list2 func msg) 
+        (println msg)) 
+      (checkValidation (next list1) list2 func msg))) )
 
-(defn validKeys [key keyList] (let [x ((first key) keyList)] ( if (= x 1) (not(nil? (second key))) true)))
+(defn validKeys 
+  [key keyList] 
+  (let [x ((first key) keyList)] 
+    (if (= x 1) 
+      (not(nil? (second key))) 
+      true)))
 
-(defn validFileds [field fieldsList] (not (nil? (fieldsList (first field)))) )
+(defn validFileds 
+  [field fieldsList] 
+  (not (nil? (fieldsList (first field)))) )
 
-(defn insert [tableName newMap] (dosync (alter db assoc tableName (conj (db tableName) newMap))))
+(defn insert 
+  [tableName newMap] 
+  (dosync 
+    (alter db assoc tableName 
+           (conj (db tableName) newMap))))
 
-(defn findKey [key list] (if (= key (first list)) true (if(nil? list) false (findKey key (next list)))))
+(defn findKey 
+  [key list] 
+  (if (= key (first list)) 
+    true (if(nil? list) 
+           false (findKey key (next list)))))
 
-(defn createTable [arg keys] (if (nil? arg) nil (merge {(first arg)  (if (findKey (first arg) keys) 1 0)} (createTable (next arg) keys))))
-(defn addTable [tableName fields keys] (if (nil? (db tableName))  (dosync (alter db assoc  tableName [(createTable fields keys)])) (printf("The table is already exists")) ))
+(defn createTable 
+  [arg keys] 
+  (if (nil? arg) 
+    nil 
+    (merge {(first arg)  
+            (if (findKey (first arg) keys) 1 0)} 
+           (createTable (next arg) keys))))
+
+(defn addTable 
+  [tableName fields keys] 
+  (if (nil? (db tableName))  
+    (dosync (alter db assoc  tableName [(createTable fields keys)]))
+    (printf("The table is already exists")) ))
 
 (defn addStruct [tableName fields] (if (nil? (db tableName))  (defstruct tableName fields ) (printf("The table is already exists")) ))
 
