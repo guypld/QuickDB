@@ -2,6 +2,9 @@
 
 
 (def a "kjkjk")
+(def c "pppppp")
+(def d "kjkjk")
+(def f "kjkjk")
 
 ;;;;;;;;;;;;;;;;jlkjlkjl;;;;;
 
