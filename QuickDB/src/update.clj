@@ -1,10 +1,7 @@
 (ns finalProject.finalProject)
 
 
-;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;
-(def a 123456)
+(def a "kjkjk")
 
 (def db (ref {}))
 
