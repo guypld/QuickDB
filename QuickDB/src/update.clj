@@ -3,11 +3,10 @@
 
 (def a "kjkjk")
 
+;;;;;;;;;;;;;;;;jlkjlkjl;;;;;
+
 (def db (ref {}))
 
-
-
-(def b "qqqq");bla bla bla
 
 (defn dropTable 
   [name] 
