@@ -6,6 +6,9 @@
 (def db (ref {}))
 
 
+
+(def b "qqqq");bla bla bla
+
 (defn dropTable 
   [name] 
   (dosync
