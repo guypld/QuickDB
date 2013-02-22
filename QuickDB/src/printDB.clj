@@ -1,14 +1,17 @@
 (ns core.printDB (:require (core.core )))
 
-
-(defn print-db 
+;print all the tables in DB
+(defn print-db
+  "print all the tables in DB"
   [] 
   (let [tables (keys @db)] 
     (map print-table tables)
     ))
 
-(defn print-all-records 
-  [recordVec cols counter] 
+;print all records in table
+(defn print-all-records
+  "print all records in table by the columns order"
+  [recordVec cols counter]
   (when-not (nil? recordVec) 
     (doall [
             (print-record (first recordVec) cols counter) 
@@ -16,7 +19,9 @@
             ] )
     ))
 
-(defn print-table 
+;print the table name and table columns names and call print all records
+(defn print-table
+  "print the table name and table columns names and call print all records"
   [t] 
   (doall [
           (printf "\nTable name-  %s\n" t)
@@ -27,8 +32,9 @@
           ])
   )
 
-
-(defn print-separator 
+;print separator line under the columns names
+(defn print-separator
+  "print separator under the columns names"
   [cols] 
   (if-not (nil? cols) 
     (doall [
@@ -38,8 +44,9 @@
       (printf "\n"))
   )
 
-
-(defn print-columns 
+;print all columns names in table
+(defn print-columns
+  "print all columns names in table"
   [cols] 
   (if-not (nil? cols) 
     (doall [
@@ -49,9 +56,9 @@
       (printf "\n"))
   )
 
-
-
+;print all fieldss in record by the columns order
 (defn print-record
+  "print all fieldss in record by the columns order"
   [r cols counter] 
   (let [value (r (first cols))] 
     (if-not (nil? cols) (doall [(printf "%d.%10s" counter value ) (print-records  r (next cols))])  
