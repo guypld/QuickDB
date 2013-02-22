@@ -4,7 +4,7 @@
   (:use [utils.utils] )
   )
 
-;db with data for tests
+;db reference
 (def db(ref {}))
 
 ;get key and record and return true if the key is found in the record

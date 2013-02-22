@@ -78,7 +78,3 @@
     (print-all-tables @db (keys @db))
     )
 
-;(def a  (ref {"person" {:keys '("id" "age"), :cols '("id" "name" "age"), :data [{"name" "Moshe", "id" 80, "age" 26} {"name" "Dror", "id" 123, "age" 20}]}, "books" {:keys '("id"), :cols '("id" "name" "year"), :data [{"name" "book", "id" 5, "year" 1999} {"name" "english", "id" 2, "year" 2002} {"name" "book", "id" 5, "year" 1999}]}}))
-
-;(def r3 {"id" 80 "name" "Moshe" "age" 26})
-;(def personfields '("id" "name" "age"))
