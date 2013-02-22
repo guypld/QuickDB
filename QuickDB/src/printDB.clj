@@ -1,4 +1,4 @@
-(ns core.printDB (:require (core.core )))
+(ns core.printDB )
 
 ;print all the tables in DB
 (defn print-db

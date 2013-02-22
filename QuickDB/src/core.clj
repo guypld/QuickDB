@@ -1,4 +1,4 @@
-(ns core)
+(ns core (:use (printDB)))
 
 ;db with data for tests
 (def db(ref {:books {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}
