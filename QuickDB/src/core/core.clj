@@ -1,4 +1,7 @@
-(ns core (:use (printDB)))
+(ns core.core 
+  (:use (core.printDB))
+  (:use (utils.constants))
+  (:use (utils.utils)))
 
 ;db with data for tests
 (def db(ref {:books {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}
@@ -7,12 +10,6 @@
              :person {:keys ["name"] :cols ["id" "name" "age"] :data [{"id" 80 "name" "Moshe" "age" 26}
                                                                     {"id" 123 "name" "Dror" "year" 20}
                                                                     ]}}))
-;util func- get element and collection and 
-;return true if the collection contains the element
-(defn in? 
-  "true if seq contains elm"
-  [seq elm]  
-  (some #(= elm %) seq))
 
 ;high order function- get 2 collections and function. 
 ;call the function with the first element in the 
@@ -57,13 +54,3 @@ if the record is correct, add it to the table "
 (add-record table newRecord)
 ))
 
-;tests
-(def a {"id" 9 "name" "dogs" "year" 2012})
-(def b {"if" 9 "name" "dogs" "year" 2012})
-(def c {"id" 9 "name" "dogs" "year" 2012 "if" 2012})
-
-(insert :books a) ;true
-(insert :books b) ;false
-(insert :books c) ;false
-
-(def bookCol ((db :books) :cols))
