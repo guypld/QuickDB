@@ -1,4 +1,4 @@
-(ns tests.testFile (:use (core [core])))
+(ns tests.testFile (:use core.core))
 
 
 ;tests

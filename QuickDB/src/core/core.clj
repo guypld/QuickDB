@@ -1,7 +1,8 @@
 (ns core.core 
   (:use (core.printDB))
   (:use (utils.constants))
-  (:use (utils.utils)))
+  (:use (utils.utils))
+  )
 
 ;db with data for tests
 (def db(ref {:books {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}
@@ -17,11 +18,14 @@
 (defn check-record-validation 
   "call the function with the first element in the 
 first collection and with the second collection"
-  [checkList baseList func] 
+  [checkList baseList func msg] 
   (cond 
     (nil? checkList) true 
     (func (first checkList) baseList) (check-record-validation (next checkList) baseList func) 
-    :else false ))
+    :else (doall [
+                  (println msg) 
+                  (false)
+                  ]) ))
 
 ;get key and record and return true if the key is found in the record
 (defn valid-key
@@ -49,8 +53,8 @@ first collection and with the second collection"
 if the record is correct, add it to the table "
   [table newRecord] 
 (if (and
-  (check-record-validation ((db table) :keys) newRecord  valid-key)
-(check-record-validation (keys newRecord) ((db table) :cols) valid-cols ))
+  (check-record-validation ((db table) :keys) newRecord  valid-key utils.constants/msgErrInvalidKey)
+(check-record-validation (keys newRecord) ((db table) :cols) valid-cols utils.constants/msgErrInvalidfield))
 (add-record table newRecord)
 ))
 
