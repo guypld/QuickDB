@@ -1,8 +1,9 @@
 (ns core.core 
-  (:use (core.printDB))
-  (:use (utils.constants))
-  (:use (utils.utils))
+  ;(:use [core.printDB])
+  ;(:use (utils.constants))
+  ;(:use (utils.utils))
   )
+
 
 ;db with data for tests
 (def db(ref {:books {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}
