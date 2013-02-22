@@ -34,7 +34,16 @@ first collection and with the second collection"
   )
 
 
-(defn valid-cols [record cols] (in?  cols  record))
+(defn valid-cols 
+  [record cols] 
+  (in?  cols  record))
+
+;get table name and new record and insert the recond to the table
+(defn add-record [table newRecord] 
+  "insert the new record to the table" 
+  (let [t ((db table) :data)] 
+     (dosync (alter db assoc-in [table :data] (conj t newRecord)))
+  ))
 
 ;get table name and new record. check record column name and keys validation.
 ;if the record is correct, add it to the table 
@@ -48,24 +57,13 @@ if the record is correct, add it to the table "
 (add-record table newRecord)
 ))
 
-;get table name and new record and insert the recond to the table
-(defn add-record [table newRecord] 
-  "insert the new record to the table" 
-  (let [t ((db table) :data)] 
-     (dosync (alter db assoc-in [table :data] (conj t newRecord)))
-  ))
-
-(defn print-db [] ())
-
-(defn print-table [t])
-
 ;tests
 (def a {"id" 9 "name" "dogs" "year" 2012})
 (def b {"if" 9 "name" "dogs" "year" 2012})
 (def c {"id" 9 "name" "dogs" "year" 2012 "if" 2012})
 
-(insert :books a)
-(insert :books b)
-(insert :books c)
+(insert :books a) ;true
+(insert :books b) ;false
+(insert :books c) ;false
 
-
+(def bookCol ((db :books) :cols))
