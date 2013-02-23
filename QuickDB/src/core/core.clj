@@ -60,6 +60,7 @@ first collection and with the second collection"
      (dosync (alter db assoc-in [table :data] (conj t newRecord)))
   ))
 
+
 ;get table name and new record. check record column name and keys validation.
 ;if the record is correct, add it to the table 
 (defn insert
@@ -78,3 +79,8 @@ if the record is correct, add it to the table "
         )
 ))
 
+
+(defn insert-all 
+  [table records] 
+  ( do-func-with-all table records insert)
+  )
