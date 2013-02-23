@@ -43,3 +43,10 @@
   )
 ) 
   
+(defn do-func-with-all 
+  [data coll func] 
+  ( when-not (nil? coll) 
+    (do 
+      (func data (first coll))
+      (do-func-with-all data (next coll) func)) 
+    ))
