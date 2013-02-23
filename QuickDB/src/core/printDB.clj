@@ -1,5 +1,6 @@
-(ns core.printDB); (:use [core.core :only db]))
-
+(ns core.printDB 
+  (:use [utils.utils])
+  )
 
 
 ;print all columns names in table
@@ -65,11 +66,8 @@
 
 (defn print-all-tables 
   [db tables] 
-  (when (not-empty tables) (do
-                             (print-table db (first tables)) 
-                             (print-all-tables db (next tables))
-                           )
-    ))
+    (do-func-with-all db tables print-table)
+    )
 
 ;print all the tables in DB
 (defn print-db
