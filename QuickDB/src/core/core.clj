@@ -8,14 +8,14 @@
 (def db(ref {}))
 
 ;get key and record and return true if the key is found in the record
-(defn valid-key
+(defn valid-key?
   "get key and record and return true if the key is found in the record"
   [key record] 
   (not (nil? (record key)))
   )
 
 
-(defn valid-cols 
+(defn valid-cols? 
   [record cols] 
   (in?  cols  record))
 
@@ -38,11 +38,11 @@ first collection and with the second collection"
   [tableName fields keys]
   (cond
     (not (nil? (db tableName))) (println msgErrTableNameExists)
-    (check-record-validation keys fields valid-cols)
-    (doall [
-            (dosync (alter db assoc tableName {:keys keys :cols fields :data []}))
-            (println msgCreateTableSuccess)
-            ]
+    (check-record-validation keys fields valid-cols?)
+    (do
+       (dosync (alter db assoc tableName {:keys keys :cols fields :data []}))
+       (println msgCreateTableSuccess)
+       
       )
   :else (println msgErrKeyNotInFields)
   ))
@@ -67,14 +67,14 @@ first collection and with the second collection"
 if the record is correct, add it to the table "
   [table newRecord] 
 (cond
-  (not(check-record-validation ((db table) :keys) newRecord  valid-key))
+  (nil? (db table)) (println msgErrTableNameNotExists)
+  (not(check-record-validation ((db table) :keys) newRecord  valid-key?))
   (println msgErrInvalidKey)
-(not(check-record-validation (keys newRecord) ((db table) :cols) valid-cols ))
+(not(check-record-validation (keys newRecord) ((db table) :cols) valid-cols? ))
 (println msgErrInvalidfield)
-:else (doall[
-             (add-record table newRecord)
-             (println msgInsrtRecSuccess)
-             ]
+:else (if-not (nil? (add-record table newRecord))
+          (println msgInsrtRecSuccess)
+          (println msgErrInsertFailed)
         )
 ))
 

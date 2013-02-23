@@ -7,10 +7,10 @@
   "print all columns names in table"
   [cols] 
   (if-not (nil? cols) 
-    (doall [
-            (printf "%10s" (first cols) ) 
-            (print-columns  (next cols))
-            ])  
+    (do
+       (printf "%10s" (first cols) ) 
+       (print-columns  (next cols))
+      )  
       (printf "\n"))
   )
 ;print separator line under the columns names
@@ -18,10 +18,10 @@
   "print separator under the columns names"
   [cols] 
   (if-not (nil? cols) 
-    (doall [
-            (printf "%10s" "--------" ) 
-            (print-separator  (next cols))
-            ])  
+    (do
+       (printf "%10s" "--------" ) 
+       (print-separator  (next cols))
+        )  
       (printf "\n"))
   )
 
@@ -30,10 +30,10 @@
   "print all fieldss in record by the columns order"
   [r cols] 
   (let [value (r (first cols))] 
-    (if-not (nil? cols) (doall [
-                                (printf "%10s" value ) 
-                                (print-record  r (next cols))
-                                ])  
+    (if-not (nil? cols) (do
+                           (printf "%10s" value ) 
+                           (print-record  r (next cols))
+                           )  
       (printf "\n")))
   )
 
@@ -42,11 +42,11 @@
   "print all records in table by the columns order"
   [recordVec cols counter]
   (when-not (nil? recordVec) 
-    (doall [
-            (printf "%d." counter )
-            (print-record (first recordVec) cols) 
-            (print-all-records (next recordVec) cols (inc counter) )
-            ] )
+    (do
+       (printf "%d." counter )
+       (print-record (first recordVec) cols) 
+       (print-all-records (next recordVec) cols (inc counter) )
+     )
     ))
 
 
@@ -54,21 +54,21 @@
 (defn print-table
   "print the table name and table columns names and call print all records"
   [db t] 
-  (doall [
-          (printf "\nTable name-  %s\n" t)
-          (println "==========================")
-          (print-columns ((db t) :cols)) 
-          (print-separator ((db t) :cols))
-          (print-all-records ((db t) :data) ((db t) :cols) 1)
-          ])
+  (do
+    (printf "\nTable name-  %s\n" t)
+    (println "==========================")
+    (print-columns ((db t) :cols)) 
+    (print-separator ((db t) :cols))
+    (print-all-records ((db t) :data) ((db t) :cols) 1)
+    )
   )
 
 (defn print-all-tables 
   [db tables] 
-  (when (not-empty tables) (doall [
-                                   (print-table db (first tables)) 
-                                   (print-all-tables db (next tables))
-                                   ])
+  (when (not-empty tables) (do
+                             (print-table db (first tables)) 
+                             (print-all-tables db (next tables))
+                           )
     ))
 
 ;print all the tables in DB

@@ -3,6 +3,14 @@
   (:use [core.printDB] )
   )
 
+;db with data for test
+;(def db(ref {:books {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}
+ ;                                                                   {"id" 2 "name" "english" "year" 2002}
+  ;                                                                  ]}
+   ;          :person {:keys ["name"] :cols ["id" "name" "age"] :data [{"id" 80 "name" "Moshe" "age" 26}
+    ;                                                                {"id" 123 "name" "Dror" "year" 20}
+     ;                                                               ]}}))
+
 
 ;tests
 (def bookfields '("id" "name" "year"))
