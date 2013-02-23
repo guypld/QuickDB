@@ -2,6 +2,7 @@
   (:use [core.printDB] )
   (:use [utils.constants])
   (:use [utils.utils] )
+  (:import [javax.swing JOptionPane])
   )
 
 ;db reference
@@ -47,10 +48,12 @@ first collection and with the second collection"
   :else (println msgErrKeyNotInFields)
   ))
 
-(defn dropTable 
+(defn drop-table 
   [name] 
-  (dosync
+  (when (= (JOptionPane/showConfirmDialog nil "are you shure?" "delete massage" JOptionPane/YES_NO_CANCEL_OPTION) JOptionPane/YES_OPTION) 
+          (dosync
     (alter db dissoc name)))
+)
 
 
 ;get table name and new record and insert the recond to the table
