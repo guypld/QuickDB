@@ -10,5 +10,5 @@
 (def msgErrTableNameExists "Create table error- table name already exists in DB")
 (def msgErrKeyNotInFields "Create table error- key doesn't exist in feilds")
 (def msgErrTableNameNotExists "Add record failed- table name doesn't exists")
-
-
+(def msgErrTableNameNotExistsDel "Delete record failed- table name doesn't exists")
+(def msgErrRecordNotExistsDel "Delete record failed- record doesn't exists")
