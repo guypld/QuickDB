@@ -40,3 +40,7 @@
            ( (cond-list k) (source-rec k) (target-rec k) ) ; check if key match
            (recur (rest k-list) cond-list source-rec target-rec) ) ;call with next key
          true ))) ;return true if no keys left
+
+(defn index-of 
+  [e coll] 
+  (first (keep-indexed #(if (= e %2) %1) coll)))
