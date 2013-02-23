@@ -87,3 +87,20 @@ if the record is correct, add it to the table "
   [table records] 
   ( do-func-with-all table records insert)
   )
+
+(defn del-record
+  [table record]
+  (when (cond 
+          (nil? (db table)) (println msgErrTableNameNotExistsDel)
+          (not (in? ((db table) :data) record)) (println msgErrRecordNotExistsDel)
+          (= (JOptionPane/showConfirmDialog nil "are you shure?" "delete massage" JOptionPane/YES_NO_CANCEL_OPTION) JOptionPane/YES_OPTION)
+          (let [i (index-of record ((db table) :data))] 
+            (dosync (alter db assoc-in [table :data] 
+                           (if (= i 0) (subvec ((db table) :data) 1)
+                                 (vec (concat 
+                                  (subvec ((db table) :data) 0 (- i 1)) 
+                                  (subvec ((db table) :data) (+ i 1)))) ))
+          
+          )
+    ))))
+  
