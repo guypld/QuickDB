@@ -23,6 +23,7 @@
       (do-func-with-all data (next coll) func)) 
     ))
 
+;used by where function
 (defn match-all-keys
   "Gets Source Rec & Target Rec and check if i matched
    accordinf to a ConditionList that is a map that contains
