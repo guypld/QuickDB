@@ -22,3 +22,20 @@
       (func data (first coll))
       (do-func-with-all data (next coll) func)) 
     ))
+
+(defn match-all-keys
+  "Gets Source Rec & Target Rec and check if i matched
+   accordinf to a ConditionList that is a map that contains
+   keys from the Source Rec.
+   Ex: (def s {:id 10})
+       (def t {:id 5 })
+       (def c {:id > })
+   ( match-all-keys (keys c) c t s )
+   will check if :id in `s` is bigger than 5"
+     [k-list cond-list source-rec target-rec]
+     (let [k (first k-list)]
+       (if-not (nil? k)     ;as long as we have keys to check
+         (and 
+           ( (cond-list k) (source-rec k) (target-rec k) ) ; check if key match
+           (recur (rest k-list) cond-list source-rec target-rec) ) ;call with next key
+         true ))) ;return true if no keys left
