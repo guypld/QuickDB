@@ -41,7 +41,6 @@
            (recur (rest k-list) cond-list source-rec target-rec) ) ;call with next key
          true ))) ;return true if no keys left
 
-
 ;used by select
 (defn where
   "Iterate over a table (Record by Record), 
