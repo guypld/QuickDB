@@ -41,6 +41,33 @@
            (recur (rest k-list) cond-list source-rec target-rec) ) ;call with next key
          true ))) ;return true if no keys left
 
+
+;used by select
+(defn where
+  "Iterate over a table (Record by Record), 
+   and return a Table Format with every record that match the condition list.
+   The Condition List is a map with KEYS from the table 
+   and a Bool Function for each key.
+   Example: (def cond-list   {id: =  , :age > })
+            (def target-rec {id: 11 , :age 53}) "
+  [table cond-list target-rec]
+  ( if (check-record-validation (keys cond-list) (table :cols) valid-cols?)
+    ( let [records (table :data) ;Get All Table Records 
+           new-records (ref []) ]      ;this vec will save matched records
+      (do
+        (doseq [rec records]       ;loop over all table and collect all matched records
+          (if (match-all-keys (keys cond-list) cond-list rec target-rec)
+            (dosync (alter new-records conj rec))))
+        {:keys (table :keys) ; RETUEN the Table (TODO:Check!!)
+         :cols (table :fields)  
+         :data new-records}
+        )
+      )
+    )
+  )
+
+
+
 (defn index-of 
   [e coll] 
   (first (keep-indexed #(if (= e %2) %1) coll)))
