@@ -1,6 +1,7 @@
 (ns tests.testFile 
   (:use [core.core])
   (:use [core.printDB] )
+  (:use [core.query] )
   )
 
 ;db with data for test
@@ -23,7 +24,7 @@
 (def r2 {"id" 2 "name" "english" "year" 2002})
 (def r5 {"id" 80 "name" "Moshe" "age" 26})
 (def r4 {"id" 123 "name" "Dror" "age" 20})
-
+ 
 (create-table "books" bookfields dummyKeys)
 (create-table "books" bookfields bookkeys)
 (create-table "books" personfields1 personKeys)
@@ -38,3 +39,4 @@
 (print-db db)
 (drop-table "books")
 (print-db db)
+(execute ["select" "books" ["name"]])
