@@ -1,9 +1,12 @@
 (ns utils.constants)
 
+(def strAppName "QuickDB")
+
 (def msgCreateTableSuccess "Table creates successfully")
 (def msgInsrtRecSuccess "Insert record is success")
 
 ;error masseges
+(def msgErrTableNameNotExistsDrop "Delete table failed- table name doesn't exists")
 (def msgErrInvalidKey "Add record failed- The new record doesn't contain all keys")
 (def msgErrInvalidfield "Add record failed- The new record contain invalid feilds")
 (def msgErrInsertFailed "Add record failed")
