@@ -1,7 +1,8 @@
 (ns core.query
   ( :use [core.core])
   ( :use [utils.utils])
-  ( :use [utils.constants]))
+  ( :use [utils.constants])
+  (:import [javax.swing JOptionPane]))
 
 (defn creatRec 
   [fields record] 
@@ -46,20 +47,14 @@
     )
   )
 
-;2
-;drop-table (tname)
-;3
-;del-record(t-name,rec)
-;insert(t-name,rec)
-;select(t-name,fields)
-;4
-;create-table (t-name, fields, keys)
-;5
-;select-where (t-name, feilds , cond, target)
-
-
-
+; Execute - The user interface with QuickDB Data Base
 (defn execute 
+  "Execute QuickDB Data Base Commands.
+   Get Vector of arguments.
+   The first argument is the command represented by a string.
+   Ex: (execute [\"drop\" \"table-name\"])
+   Commands:
+   drop , delete , insert , select , create table , select where"
   [args-vec]
   (try
     (let [com (first args-vec)
@@ -69,17 +64,37 @@
           arg5 (get args-vec 4)
           ]
     (cond 
-      (= com "drop") (drop-table table-name)
-      (= com "delete") (del-record table-name arg3)
+      ;DROP - delete one table from DB
+      (= com "drop") (when (= 
+                               (JOptionPane/showConfirmDialog nil 
+                                                              (str "Are you sure you want to delete the table "
+                                                                   table-name " ?") 
+                                                              (str "Drop Table - " strAppName) 
+                                                              JOptionPane/YES_NO_OPTION) 
+                               JOptionPane/YES_OPTION)
+                         (drop-table table-name) )
+      ;DELETE - delete given record from table
+      (= com "delete") (when (= 
+                               (JOptionPane/showConfirmDialog nil 
+                                                              (str "Are you sure you want to delete the record from "
+                                                                   table-name " ?") 
+                                                              (str "Delete Record - " strAppName) 
+                                                              JOptionPane/YES_NO_CANCEL_OPTION) 
+                               JOptionPane/YES_OPTION)
+                         (del-record table-name arg3))
+      ;INSERT - insert given record to a table
       (= com "insert") (insert table-name arg3)
+      
+      ;SELEST - select only given cols from table (instead all cols), returns all the recordsfrom table!
       (= com "select") (select arg3 table-name)
-      (= com "create table") (create-table table-name arg3 arg4) 
+      ;CREATE TABLE - create new empty table
+      (= com "create table") (create-table table-name arg3 arg4)
+      ;SELECT WHERE - get only records that matched some condition, and select only wanted cols
       (= com "select where") (select arg3 (where table-name arg4 arg5) )  
       :else (println msgErrInvalidCommand )
       ))
-    (catch Exception e (println e))
-    
+    (catch ArithmeticException e
+      (println "Exception message: " (.getMessage e)))
     )
-  
   )
  
