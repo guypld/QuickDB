@@ -30,25 +30,21 @@
 (def r5 {"id" 80 "name" "Moshe" "age" 26})
 (def r4 {"id" 123 "name" "Dror" "age" 20})
  
-(create-table "books" bookfields dummyKeys)
-(create-table "books" bookfields bookkeys)
-(create-table "books" personfields1 personKeys)
-(create-table "person" personfields1 personKeys)
+(execute ["create table" "books" bookfields dummyKeys]) ;fail- key doesn't wxist in fields
+(execute ["create table" "books" bookfields bookkeys]) ;success
+(execute ["create table" "books" personfields1 personKeys]) ;fail- table name exists
+(execute ["create table" "person" personfields1 personKeys]) ;success
 
-(insert-all "books" [r1 r2 r1])
-;(insert "books" r2)
-;(insert "books" r1)
-(insert "person" r1)
-(insert "person" r5)
-(insert "person" r4)
+;(insert-all "books" [r1 r2 r1])
+(execute ["insert" "books" r2]) ;success
+(execute ["insert" "books" r1]) ;success
+(execute ["insert" "person" r1]) ;feild- doesn't have all keys
+(execute ["insert" "person" r5]) ;success
+(execute ["insert" "person" r4]) ;success
 (print-db db)
-;(drop-table "books")
+;(execute ["drop" "books"])
 (print-db db)
-(execute ["select" "books" ["name"]])
-
-
-
-
+(print-table-return (execute ["select" "books" ["id"]]))
 ; (execute ["insert" "books" {"id" 80 "name" "Moshe" "year" 26 }])
 ; (execute ["select" "books" ["id"]])
 ; (execute ["select where" "books" ["id"] {"id" >} {"id" 3}])
