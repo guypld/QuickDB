@@ -2,21 +2,23 @@
   (:use [core.printDB] )
   (:use [utils.constants])
   (:use [utils.utils] )
-  (:import [javax.swing JOptionPane])
   )
 
 ;db reference
 (def db(ref {}))
 
 ;get key and record and return true if the key is found in the record
-(defn valid-key?
-  "get key and record and return true if the key is found in the record"
-  [key record] 
+(defn- valid-key?
+  "Get key + record. 
+   Return True if the key is found in the record"
+  [key record]
   (not (nil? (record key)))
   )
 
 
-(defn valid-cols? 
+(defn valid-cols?
+  "Get Record + Cols.
+   Return the reurn value from in?"
   [record cols] 
   (in?  cols  record))
 
@@ -25,8 +27,8 @@
 ;call the function with the first element in the 
 ;first collection and with the second collection   
 (defn check-record-validation 
-  "call the function with the first element in the 
-first collection and with the second collection"
+  "Call the function with the first element in the 
+   first collection and with the second collection"
   [checkList baseList func] 
   (cond 
     (nil? checkList) true 
@@ -35,7 +37,8 @@ first collection and with the second collection"
     ) 
   )
 
-(defn create-table 
+(defn create-table
+  "Get Table Name + Fields map + Keys"
   [tableName fields keys]
   (cond
     (not (nil? (db tableName))) (println msgErrTableNameExists)
@@ -49,36 +52,46 @@ first collection and with the second collection"
   ))
 
 (defn drop-table 
+  "Remove table from DB by Table Name"
   [name] 
-  (when (= (JOptionPane/showConfirmDialog nil "are you shure?" "delete massage" JOptionPane/YES_NO_CANCEL_OPTION) JOptionPane/YES_OPTION) 
-          (dosync
-    (alter db dissoc name)))
+  (cond (nil? (db name))  (throw (Exception. msgErrTableNameNotExistsDrop))   ; table not exist
+    :else (dosync(alter db dissoc name))  ;drop table
+    )
 )
 
 
 ;get table name and new record and insert the recond to the table
-(defn add-record [table newRecord] 
+;used by insert
+(defn- add-record [table newRecord] 
   "insert the new record to the table" 
   (let [t ((db table) :data)] 
-     (dosync (alter db assoc-in [table :data] (conj t newRecord)))
-  ))
+     (dosync (alter db assoc-in [table :data] (conj t newRecord))))
+  )
 
-
+;Insert new record to exist table
 ;get table name and new record. check record column name and keys validation.
 ;if the record is correct, add it to the table 
+;return true on success
 (defn insert
   "get table name and new record. check record column name and keys validation.
 if the record is correct, add it to the table "
   [table newRecord] 
 (cond
-  (nil? (db table)) (println msgErrTableNameNotExists)
+  ; Invalid Table Name
+  (nil? (db table)) 
+  (throw (Exception. msgErrTableNameNotExists))
+  ; Invalid Keys
   (not(check-record-validation ((db table) :keys) newRecord  valid-key?))
-  (println msgErrInvalidKey)
-(not(check-record-validation (keys newRecord) ((db table) :cols) valid-cols? ))
-(println msgErrInvalidfield)
-:else (if-not (nil? (add-record table newRecord))
-          (println msgInsrtRecSuccess)
-          (println msgErrInsertFailed)
+  (throw (Exception. msgErrInvalidKey))
+  ; Invalid Feilds
+  (not(check-record-validation (keys newRecord) ((db table) :cols) valid-cols? ))
+  (throw (Exception. msgErrInvalidfield))
+  ; Key already exist
+  ;   TODO!
+  ; OK
+  :else (if-not (nil? (add-record table newRecord)) ; try to insert
+          true ;success
+          (throw (Exception. msgErrInsertFailed))
         )
 ))
 
@@ -91,9 +104,9 @@ if the record is correct, add it to the table "
 (defn del-record
   [table record]
   (when (cond 
-          (nil? (db table)) (println msgErrTableNameNotExistsDel)
-          (not (in? ((db table) :data) record)) (println msgErrRecordNotExistsDel)
-          (= (JOptionPane/showConfirmDialog nil "are you shure?" "delete massage" JOptionPane/YES_NO_CANCEL_OPTION) JOptionPane/YES_OPTION)
+          (nil? (db table)) (throw (Exception. msgErrTableNameNotExistsDel))
+          (not (in? ((db table) :data) record)) (throw (Exception. msgErrRecordNotExistsDel))
+          :else
           (let [i (index-of record ((db table) :data))] 
             (dosync (alter db assoc-in [table :data] 
                            (if (= i 0) (subvec ((db table) :data) 1)
