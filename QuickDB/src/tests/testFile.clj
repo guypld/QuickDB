@@ -1,8 +1,13 @@
 (ns tests.testFile 
-  (:use [core.core])
-  (:use [core.printDB] )
-  (:use [core.query] )
+  (:use [core.core] [clojure.test] [core.printDB] [core.query] )
   )
+
+
+; READ !!
+; http://nakkaya.com/2009/11/18/unit-testing-in-clojure/ 
+;(deftest 
+
+
 
 ;db with data for test
 ;(def db(ref {:books {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}
@@ -37,6 +42,6 @@
 (insert "person" r5)
 (insert "person" r4)
 (print-db db)
-(drop-table "books")
+;(drop-table "books")
 (print-db db)
 (execute ["select" "books" ["name"]])
