@@ -45,3 +45,10 @@
 ;(drop-table "books")
 (print-db db)
 (execute ["select" "books" ["name"]])
+
+
+
+
+; (execute ["insert" "books" {"id" 80 "name" "Moshe" "year" 26 }])
+; (execute ["select" "books" ["id"]])
+; (execute ["select where" "books" ["id"] {"id" >} {"id" 3}])
