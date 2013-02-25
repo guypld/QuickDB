@@ -1,10 +1,8 @@
 (ns core.core 
-  (:use [core.printDB] )
-  (:use [utils.constants])
-  (:use [utils.utils] )
+  (:use [core.printDB] [utils.constants] [utils.utils] )
   )
 
-;db reference
+;db reference to save the data base
 (def db(ref {}))
 
 ;get key and record and return true if the key is found in the record
@@ -41,23 +39,19 @@
   "Get Table Name + Fields map + Keys"
   [tableName fields keys]
   (cond
-    (not (nil? (db tableName))) (println msgErrTableNameExists)
-    (check-record-validation keys fields valid-cols?)
-    (do
-       (dosync (alter db assoc tableName {:keys keys :cols fields :data []}))
-       (println msgCreateTableSuccess)
-       
-      )
-  :else (println msgErrKeyNotInFields)
-  ))
+    (not (nil? (db tableName))) (throw (Exception.  msgErrTableNameExists))
+    (check-record-validation keys fields valid-cols?) (dosync (alter db assoc tableName {:keys keys :cols fields :data []}))  
+    :else (throw (Exception.  msgErrKeyNotInFields))
+       )
+      true)
 
 (defn drop-table 
   "Remove table from DB by Table Name"
   [name] 
-  (cond (nil? (db name))  (throw (Exception. msgErrTableNameNotExistsDrop))   ; table not exist
+  (cond (nil? (db name))  (throw (Exception.  msgErrTableNameNotExistsDrop))   ; table not exist
     :else (dosync(alter db dissoc name))  ;drop table
     )
-)
+  true)
 
 
 ;get table name and new record and insert the recond to the table
@@ -79,21 +73,20 @@ if the record is correct, add it to the table "
 (cond
   ; Invalid Table Name
   (nil? (db table)) 
-  (throw (Exception. msgErrTableNameNotExists))
+  (throw (Exception.  msgErrTableNameNotExists))
   ; Invalid Keys
   (not(check-record-validation ((db table) :keys) newRecord  valid-key?))
-  (throw (Exception. msgErrInvalidKey))
+  (throw (Exception.  msgErrInvalidKey))
   ; Invalid Feilds
   (not(check-record-validation (keys newRecord) ((db table) :cols) valid-cols? ))
-  (throw (Exception. msgErrInvalidfield))
+  (throw (Exception.  msgErrInvalidfield))
   ; Key already exist
   ;   TODO!
   ; OK
-  :else (if-not (nil? (add-record table newRecord)) ; try to insert
-          true ;success
-          (throw (Exception. msgErrInsertFailed))
+  :else (if (nil? (add-record table newRecord)) ; try to insert
+          (throw (Exception.  msgErrInsertFailed))
         )
-))
+  )true);success
 
 
 (defn insert-all 
@@ -104,8 +97,8 @@ if the record is correct, add it to the table "
 (defn del-record
   [table record]
   (when (cond 
-          (nil? (db table)) (throw (Exception. msgErrTableNameNotExistsDel))
-          (not (in? ((db table) :data) record)) (throw (Exception. msgErrRecordNotExistsDel))
+          (nil? (db table)) (throw (Exception.  msgErrTableNameNotExistsDel))
+          (not (in? ((db table) :data) record)) (throw (Exception.   msgErrRecordNotExistsDel))
           :else
           (let [i (index-of record ((db table) :data))] 
             (dosync (alter db assoc-in [table :data] 
@@ -115,5 +108,48 @@ if the record is correct, add it to the table "
                                   (subvec ((db table) :data) (+ i 1)))) ))
           
           )
-    ))))
+    )))true)
   
+(defn creatRec 
+  [fields record] 
+  (if (nil? fields) nil 
+    (merge {(first fields) (record (first fields)) } (creatRec (next fields) record))
+    ))
+
+(defn findRecords 
+  [fields tableData] 
+  (if (nil? tableData) [] 
+    (conj (findRecords fields (next tableData))  (creatRec fields (first tableData)) )
+    ))
+
+(defn select
+  [fields table]
+  (merge {:keys []
+    :cols fields}
+  { :data (findRecords fields ((db table) :data) )}
+  ))
+
+
+;used by select
+(defn where
+  "Iterate over a table (Record by Record), 
+   and return a Table Format with every record that match the condition list.
+   The Condition List is a map with KEYS from the table 
+   and a Bool Function for each key.
+   Example: (def cond-list   {id: =  , :age > })
+            (def target-rec {id: 11 , :age 53}) "
+  [table cond-list target-rec]
+  ( if (check-record-validation (keys cond-list) (table :cols) valid-cols?)
+    ( let [records (table :data) ;Get All Table Records 
+           new-records (ref []) ]      ;this vec will save matched records
+      (do
+        (doseq [rec records]       ;loop over all table and collect all matched records
+          (if (match-all-keys (keys cond-list) cond-list rec target-rec)
+            (dosync (alter new-records conj rec))))
+        {:keys (table :keys) ; return the Table
+         :cols (table :cols)  
+         :data @new-records}
+        )
+      )
+    )
+  )
