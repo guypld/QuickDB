@@ -12,3 +12,4 @@
 (def msgErrTableNameNotExists "Add record failed- table name doesn't exists")
 (def msgErrTableNameNotExistsDel "Delete record failed- table name doesn't exists")
 (def msgErrRecordNotExistsDel "Delete record failed- record doesn't exists")
+(def msgErrInvalidCommand "Invalid Command")
