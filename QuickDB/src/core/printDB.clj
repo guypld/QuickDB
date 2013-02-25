@@ -42,7 +42,7 @@
 (defn print-all-records
   "print all records in table by the columns order"
   [recordVec cols counter]
-  (when-not (nil? recordVec) 
+  (when-not (empty? recordVec) 
     (do
        (printf "%d." counter )
        (print-record (first recordVec) cols) 
@@ -55,14 +55,14 @@
 (defn print-table
   "print the table name and table columns names and call print all records"
   [db t] 
-  (do
-    (printf "\nTable name-  %s\n" t)
-    (println "==========================")
-    (print-columns ((db t) :cols)) 
-    (print-separator ((db t) :cols))
-    (print-all-records ((db t) :data) ((db t) :cols) 1)
-    )
-  )
+  (when-not (empty? ((db t) :data))(do
+                                     (printf "\nTable name-  %s\n" t)
+                                     (println "==========================")
+                                     (print-columns ((db t) :cols)) 
+                                     (print-separator ((db t) :cols))
+                                     (print-all-records ((db t) :data) ((db t) :cols) 1)
+                                     )
+    ))
 
 (defn print-all-tables 
   [db tables] 
@@ -76,3 +76,14 @@
     (print-all-tables @db (keys @db))
     )
 
+(defn print-table-return
+  "print the table name and table columns names and call print all records"
+  [t] 
+  (if-not (empty? (t :data))(do
+                                     (printf "\nTable name-  %s\n" t)
+                                     (println "==========================")
+                                     (print-columns (t :cols)) 
+                                     (print-separator (t :cols))
+                                     (print-all-records (t :data) (t :cols) 1)
+                                     )
+    (println "no records")))
