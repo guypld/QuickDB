@@ -44,12 +44,12 @@
                          (println msgInsrtRecSuccess))
       
       ;SELEST - select only given cols from table (instead all cols), returns all the recordsfrom table!
-      (= com "select") (select arg3 table-name)
+      (= com "select") (select arg3 (db table-name))
       ;CREATE TABLE - create new empty table
       (= com "create table") (when (create-table table-name arg3 arg4)
                                (println msgCreateTableSuccess))
       ;SELECT WHERE - get only records that matched some condition, and select only wanted cols
-      (= com "select where") (select arg3 (where table-name arg4 arg5) )  
+      (= com "select where") (select arg3 (where (db table-name) arg4 arg5) )  
       :else (println msgErrInvalidCommand )
       ))
     (catch Exception e
