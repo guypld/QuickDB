@@ -4,7 +4,7 @@
 ;return true if the collection contains the element
 (defn in? 
   "true if seq contains elm"
-  [seq elm]  
+  [elm seq]  
   (some #(= elm %) seq))
 
 ;util func- check if two maps conatains the same keys
@@ -15,7 +15,12 @@
           (map = (keys m1) (keys m2)))
  )
 
+;high order function
+;get data collection and function.
+;call function data and each time one element from collection
 (defn do-func-with-all 
+  "get data collection and function.
+call function data and each time one element from collection"
   [data coll func] 
   ( when-not (nil? coll) 
     (do 
@@ -41,6 +46,8 @@
            (recur (rest k-list) cond-list source-rec target-rec) ) ;call with next key
          true ))) ;return true if no keys left
 
+;get vector and element and return the index of element
 (defn index-of 
+  "get vector and element and return the index of element"
   [e coll] 
   (first (keep-indexed #(if (= e %2) %1) coll)))
