@@ -14,6 +14,7 @@
       )  
       (printf "\n"))
   )
+
 ;print separator line under the columns names
 (defn print-separator
   "print separator under the columns names"
@@ -47,24 +48,26 @@
        (printf "%d." counter )
        (print-record (first recordVec) cols) 
        (print-all-records (next recordVec) cols (inc counter) )
-     )
-    ))
-
+     )))
 
 ;print the table name and table columns names and call print all records
 (defn print-table
   "print the table name and table columns names and call print all records"
   [db t] 
-  (when-not (empty? ((db t) :data))(do
-                                     (printf "\nTable name-  %s\n" t)
-                                     (println "==========================")
-                                     (print-columns ((db t) :cols)) 
-                                     (print-separator ((db t) :cols))
-                                     (print-all-records ((db t) :data) ((db t) :cols) 1)
-                                     )
+  (when-not (empty? ((db t) :data))
+    (do
+      (printf "\nTable name-  %s\n" t)
+      (println "==========================")
+      (print-columns ((db t) :cols)) 
+      (print-separator ((db t) :cols))
+      (print-all-records ((db t) :data) ((db t) :cols) 1)
+      )
     ))
 
+;get DB and tables list and print all the tables
+;use high order function fron utils.utils
 (defn print-all-tables 
+  "print all the tables in db"
   [db tables] 
     (do-func-with-all db tables print-table)
     )
@@ -76,14 +79,17 @@
     (print-all-tables @db (keys @db))
     )
 
+;print the table name and table columns names and call print all records
 (defn print-table-return
   "print the table name and table columns names and call print all records"
   [t] 
-  (if-not (empty? (t :data))(do
-                                     (printf "\nTable name-  %s\n" t)
-                                     (println "==========================")
-                                     (print-columns (t :cols)) 
-                                     (print-separator (t :cols))
-                                     (print-all-records (t :data) (t :cols) 1)
-                                     )
-    (println "no records")))
+  (if-not (empty? (t :data))
+    (do
+      (printf "\nTable name-  Return query table \n" )
+      (println "==========================")
+      (print-columns (t :cols)) 
+      (print-separator (t :cols))
+      (print-all-records (t :data) (t :cols) 1)
+      )
+    (println "no records")
+    ))
