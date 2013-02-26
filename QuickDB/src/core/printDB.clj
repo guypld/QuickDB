@@ -83,7 +83,9 @@
 (defn print-table-return
   "print the table name and table columns names and call print all records"
   [t] 
-  (if-not (empty? (t :data))
+  (if (or (nil? t) (empty? (t :data))) 
+    (println "no records")
+    ;else
     (do
       (printf "\nTable name-  Return query table \n" )
       (println "==========================")
@@ -91,5 +93,4 @@
       (print-separator (t :cols))
       (print-all-records (t :data) (t :cols) 1)
       )
-    (println "no records")
     ))
