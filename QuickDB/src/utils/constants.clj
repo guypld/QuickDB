@@ -6,6 +6,8 @@
 (def msgCreateTableSuccess "Table creates successfully")
 (def msgInsrtRecSuccess "Insert record successed")
 (def msgUpdateRecordSuccess "Update record successed")
+(def msgDropTableSuccess "Table was droped successfully")
+(def msgDeleteRecSuccess "Delete record successed")
 
 ;error masseges for exceptions
 (def msgErrTableNameNotExistsDrop "Delete table failed- table name doesn't exists")
