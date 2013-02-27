@@ -54,7 +54,7 @@
 (defn print-table
   "print the table name and table columns names and call print all records"
   [db t] 
-  (when-not (empty? ((db t) :data))
+  (if (empty? ((db t) :data)) (printf "%s is empty table" t)
     (do
       (printf "\nTable name-  %s\n" t)
       (println "==========================")
