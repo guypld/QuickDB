@@ -26,8 +26,8 @@
 ;return true if and the table add successfuly ti DB
 (defn create-table
   "Get Table Name + Fields map + Keys
-check if the table name doesnwt exist in DB
-and if all keys exsist in the field list"
+check if the table name exist in DB
+and if all keys exist in the field list"
   [tableName fields keys]
   (cond
     ;if table name already exsist in DB
