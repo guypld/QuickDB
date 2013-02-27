@@ -1,4 +1,4 @@
 QuickDB
 =======
 
-A Simple &amp; Quick in-memory DB in Clojure
+A Simple &amp; Quick in-memory Data Base in Clojure
