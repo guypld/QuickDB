@@ -4,7 +4,8 @@
 
 ;success insert massages
 (def msgCreateTableSuccess "Table creates successfully")
-(def msgInsrtRecSuccess "Insert record is success")
+(def msgInsrtRecSuccess "Insert record successed")
+(def msgUpdateRecordSuccess "Update record successed")
 
 ;error masseges for exceptions
 (def msgErrTableNameNotExistsDrop "Delete table failed- table name doesn't exists")
@@ -18,3 +19,8 @@
 (def msgErrRecordNotExistsDel "Delete record failed- record doesn't exists")
 (def msgErrInvalidCommand "Invalid Command")
 (def msgErrRecordExists "Add record failed- record with same fields already exists")
+(def msgErrUpdateTableNotExists "Update record failed- table name doesn't exists")
+(def msgErrUpdateRecordNotExists "Update record failed- old record doesn't exists")
+(def msgErrInvalidKeyUpdate "Update record failed- The new record doesn't contain all keys")
+
+
