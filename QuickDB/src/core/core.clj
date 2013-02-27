@@ -88,11 +88,11 @@ and if all keys exist in the field list"
 (defn- create-cond-list 
   "create map of functions for where quary (cond-list)
 return map (cond-list)"
-  [record] 
-  (when-not (empty? record) ;if nor empty 
+  [keys] 
+  (when-not (empty? keys) ;if nor empty 
     (merge 
-      {(first record) =} 
-      (create-cond-list (next record))))
+      {(first keys) =} 
+      (create-cond-list (next keys))))
   ) 
 
 ;get table name and record
@@ -206,3 +206,35 @@ return new table with relevant data and relevant columns"
     :cols fields}
   { :data (find-records fields (table :data) )}
   )))
+
+;get table name, old record and new record
+;repalce the old record with the new record
+;use insert and del-rec function
+;use also match-all-keys
+(defn update-record 
+  "replace the old record with new record
+in table, if the new record is valid and old record 
+exists. check if old record and new record
+share the same keys"
+  [table old-rec new-rec] 
+  (let [t (db table)]
+    (cond
+    ;if table not exists
+    (nil? t) (throw (Exception. msgErrUpdateTableNotExists))
+    ;if old record not exists
+    (not (in? old-rec (t :data))) (throw (Exception. msgErrUpdateRecordNotExists))
+    ;if new- record not contain all keys
+    (not(check-record-validation (t :keys) new-rec  #(not (nil? (%2 %1)))))
+    (throw (Exception.  msgErrInvalidKeyUpdate))
+    ;if new- record not contain corrrect fields
+    (not(check-record-validation (keys new-rec) ((db table) :cols) in? ))
+    (throw (Exception.  msgErrInvalidfield))
+    ;if new record and old record dont have the same keys
+    (not (match-all-keys (t :keys) (create-cond-list (t :keys)) old-rec new-rec ))
+    (throw (Exception.  msgErrInvalidKeyUpdate))
+    ;else insert the new record
+    :else (do
+            (del-record table old-rec)
+            (insert table new-rec)
+            )
+    ))true)
