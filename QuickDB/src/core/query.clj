@@ -49,7 +49,10 @@
       (= com "create table") (when (create-table table-name arg3 arg4)
                                (println msgCreateTableSuccess))
       ;SELECT WHERE - get only records that matched some condition, and select only wanted cols
-      (= com "select where") (select arg3 (where (db table-name) arg4 arg5) )  
+      (= com "select where") (select arg3 (where (db table-name) arg4 arg5) )
+       ;UPDATE - get table name, old-rec and new recors. and update the table
+      (= com "update") (when (update-record table-name arg3 arg4)
+                         (println msgUpdateRecordSuccess))
       :else (println msgErrInvalidCommand )
       ))
     (catch Exception e
