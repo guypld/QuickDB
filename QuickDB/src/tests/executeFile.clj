@@ -40,9 +40,9 @@
 
 ;(insert-all "books" [r1 r2 r1])
 (execute ["insert" "books" r2]) ;success
-(execute ["insert" "books" r2]) ;success
+(execute ["insert" "books" r2]) ;failed- already exsits
 (execute ["insert" "books" r1]) ;success
-(execute ["insert" "person" r1]) ;feild- doesn't have all keys
+(execute ["insert" "person" r1]) ;faild- doesn't have all keys
 (execute ["insert" "person" r5]) ;success
 (execute ["insert" "person" r4]) ;success
 (print-db db)
@@ -58,4 +58,8 @@
 (execute ["update" "books" r2 r1]) ; r2 not exsits
 (execute ["update" "books" r3 r1]) ;not same keys
 (execute ["update" "books" r2 r6]) ;not same keys
+(print-db db) 
+(execute ["delete" "books" r2]) ;faild- not exists
+(execute ["delete" "books" r3]) ;ok
+(execute ["delete" "books" r1]) ;ok
 (print-db db) 
