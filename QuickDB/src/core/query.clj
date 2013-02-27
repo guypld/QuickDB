@@ -29,7 +29,8 @@
                                                               (str "Drop Table - " strAppName) 
                                                               JOptionPane/YES_NO_OPTION) 
                                JOptionPane/YES_OPTION)
-                         (drop-table table-name) )
+                        (when (drop-table table-name) ) 
+                        (println msgDropTableSuccess))
       ;DELETE - delete given record from table
       (= com "delete") (when (= 
                                (JOptionPane/showConfirmDialog nil 
@@ -38,7 +39,8 @@
                                                               (str "Delete Record - " strAppName) 
                                                               JOptionPane/YES_NO_CANCEL_OPTION) 
                                JOptionPane/YES_OPTION)
-                         (del-record table-name arg3))
+                        (when (del-record table-name arg3))
+                        (println msgDeleteRecSuccess))
       ;INSERT - insert given record to a table
       (= com "insert") (when (insert table-name arg3)
                          (println msgInsrtRecSuccess))
