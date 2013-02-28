@@ -2,17 +2,6 @@
   (:use [core.core] [clojure.test] [core.printDB] [core.query] )
   )
 
-; READ !!
-; http://nakkaya.com/2009/11/18/unit-testing-in-clojure/ 
-;(deftest 
-
-;db with data for test
-;(def db(ref {:books {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}
- ;                                                                   {"id" 2 "name" "english" "year" 2002}
-  ;                                                                  ]}
-   ;          :person {:keys ["name"] :cols ["id" "name" "age"] :data [{"id" 80 "name" "Moshe" "age" 26}
-    ;                                                                {"id" 123 "name" "Dror" "year" 20}
-     ;                                                               ]}}))
 
 (def db-test-1(ref {"books" {:keys ["id"] :cols ["id" "name" "year"] :data []}}))
 (def db-test-2(ref {"books" {:keys ["id"] :cols ["id" "name" "year"] :data [{"id" 5 "name" "book" "year" 1999}]}}))
