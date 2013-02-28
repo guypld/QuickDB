@@ -1,5 +1,5 @@
 (ns core.printDB 
-  (:use [utils.utils])
+  (:use [utils.utils] [utils.constants])
   )
 
 
@@ -9,7 +9,7 @@
   [cols] 
   (if-not (nil? cols) 
     (do
-       (printf "%10s" (first cols) ) 
+       (printf (str "%" MAX_LINE_SIZE "s") (first cols) ) 
        (print-columns  (next cols))
       )  
       (printf "\n"))
@@ -21,7 +21,7 @@
   [cols] 
   (if-not (nil? cols) 
     (do
-       (printf "%10s" "--------" ) 
+       (printf (str "%" MAX_LINE_SIZE "s") "--------" ) 
        (print-separator  (next cols))
         )  
       (printf "\n"))
@@ -33,7 +33,7 @@
   [r cols] 
   (let [value (r (first cols))] 
     (if-not (nil? cols) (do
-                           (printf "%10s" value ) 
+                           (printf (str "%" MAX_LINE_SIZE "s") value ) 
                            (print-record  r (next cols))
                            )  
       (printf "\n")))
