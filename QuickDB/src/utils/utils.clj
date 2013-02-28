@@ -51,3 +51,5 @@ call function data and each time one element from collection"
   "get vector and element and return the index of element"
   [e coll] 
   (first (keep-indexed #(if (= e %2) %1) coll)))
+
+(defn print-title [title] (printf "\n******************\n*\t%8s\t*\n******************\n" title) )
