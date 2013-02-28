@@ -22,31 +22,37 @@
           ]
     (cond 
       ;DROP - delete one table from DB
-      (= com "drop") (when (= 
+      (= com "drop") (if (= 
                                (JOptionPane/showConfirmDialog nil 
                                                               (str "Are you sure you want to delete the table "
                                                                    table-name " ?") 
                                                               (str "Drop Table - " strAppName) 
                                                               JOptionPane/YES_NO_OPTION) 
                                JOptionPane/YES_OPTION)
-                        (when (drop-table table-name) ) 
-                        (println msgDropTableSuccess))
+                        (when (drop-table table-name)  
+                          (println msgDropTableSuccess))
+                        ;else
+                        (println msgDropCancel)
+                        )
       ;DELETE - delete given record from table
-      (= com "delete") (when (= 
+      (= com "delete") (if (= 
                                (JOptionPane/showConfirmDialog nil 
                                                               (str "Are you sure you want to delete the record from "
                                                                    table-name " ?") 
                                                               (str "Delete Record - " strAppName) 
-                                                              JOptionPane/YES_NO_CANCEL_OPTION) 
+                                                              JOptionPane/YES_NO_OPTION) 
                                JOptionPane/YES_OPTION)
-                        (when (del-record table-name arg3))
-                        (println msgDeleteRecSuccess))
+                        (when (del-record table-name arg3)
+                          (println msgDeleteRecSuccess))
+                        ;else
+                        (println msgDeleteCancel)
+                        )
       ;INSERT - insert given record to a table
       (= com "insert") (when (insert table-name arg3)
                          (println msgInsrtRecSuccess))
       
       ;SELEST - select only given cols from table (instead all cols), returns all the recordsfrom table!
-      (= com "select") (select arg3 (db table-name))
+      (= com "select") (select arg3 (if (string? table-name) (db table-name) table-name))
       ;CREATE TABLE - create new empty table
       (= com "create table") (when (create-table table-name arg3 arg4)
                                (println msgCreateTableSuccess))
