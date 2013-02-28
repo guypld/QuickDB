@@ -25,9 +25,10 @@
 ;and if all keys exsist in the field list
 ;return true if and the table add successfuly ti DB
 (defn create-table
-  "Get Table Name + Fields map + Keys
-check if the table name exist in DB
-and if all keys exist in the field list"
+  "Create new empty table in db.
+   Get Table Name + Fields map + Keys
+   check if the table name exist in DB
+   and if all keys exist in the field list"
   [tableName fields keys]
   (cond
     ;if table name already exsist in DB
