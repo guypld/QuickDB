@@ -25,4 +25,9 @@
 (def msgErrUpdateRecordNotExists "Update record failed- old record doesn't exists")
 (def msgErrInvalidKeyUpdate "Update record failed- The new record doesn't contain all keys")
 
+;cancel massages
+(def msgDropCancel "Drop cancelled")
+(def msgDeleteCancel "Delete cancelled" )
 
+
+(def MAX_LINE_SIZE 15)
